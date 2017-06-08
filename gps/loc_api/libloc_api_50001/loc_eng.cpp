@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009-2016, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -290,6 +290,7 @@ LocEngStopFix::LocEngStopFix(LocEngAdapter* adapter) :
 inline void LocEngStopFix::proc() const
 {
     loc_eng_data_s_type* locEng = (loc_eng_data_s_type*)mAdapter->getOwner();
+    mAdapter->clearGnssSvUsedListData();
     loc_eng_stop_handler(*locEng);
 }
 inline void LocEngStopFix::locallog() const
@@ -508,6 +509,31 @@ struct LocEngSuplMode : public LocMsg {
         locallog();
     }
 };
+
+//        case LOC_ENG_MSG_SET_NMEA_TYPE:
+struct LocEngSetNmeaTypes : public LocMsg {
+    LocEngAdapter* mAdapter;
+    uint32_t  nmeaTypesMask;
+    inline LocEngSetNmeaTypes(LocEngAdapter* adapter,
+                                uint32_t typesMask) :
+        LocMsg(), mAdapter(adapter), nmeaTypesMask(typesMask)
+    {
+        locallog();
+    }
+    inline virtual void proc() const {
+        // set the nmea types
+        mAdapter->setNMEATypes(nmeaTypesMask);
+    }
+    inline void locallog() const
+    {
+        LOC_LOGV("LocEngSetNmeaTypes %u\n",nmeaTypesMask);
+    }
+    inline virtual void log() const
+    {
+        locallog();
+    }
+};
+
 
 //        case LOC_ENG_MSG_LPP_CONFIG:
 struct LocEngLppConfig : public LocMsg {
@@ -771,6 +797,10 @@ void LocEngReportPosition::proc() const {
                         (gps_conf.ACCURACY_THRES != 0) &&
                         (mLocation.gpsLocation.accuracy >
                          gps_conf.ACCURACY_THRES)))) {
+                if (mLocationExtended.flags & GPS_LOCATION_EXTENDED_HAS_GNSS_SV_USED_DATA)
+                {
+                    adapter->setGnssSvUsedListData(mLocationExtended.gnss_sv_used_ids);
+                }
                 locEng->location_cb((UlpLocation*)&(mLocation),
                                     (void*)mLocationExt);
                 reported = true;
@@ -845,14 +875,29 @@ void LocEngReportSv::proc() const {
 
     if (locEng->mute_session_state != LOC_MUTE_SESS_IN_SESSION)
     {
+        GnssSvStatus gnssSvStatus;
+        memcpy(&gnssSvStatus,&mSvStatus,sizeof(GnssSvStatus));
+        if (adapter->isGnssSvIdUsedInPosAvail())
+        {
+            GnssSvUsedInPosition gnssSvIdUsedInPosition =
+                                adapter->getGnssSvUsedListData();
+            gnssSvStatus.gps_used_in_fix_mask =
+                        gnssSvIdUsedInPosition.gps_sv_used_ids_mask;
+            gnssSvStatus.glo_used_in_fix_mask =
+                        gnssSvIdUsedInPosition.glo_sv_used_ids_mask;
+            gnssSvStatus.bds_used_in_fix_mask =
+                        gnssSvIdUsedInPosition.bds_sv_used_ids_mask;
+            gnssSvStatus.gal_used_in_fix_mask =
+                        gnssSvIdUsedInPosition.gal_sv_used_ids_mask;
+        }
         if (locEng->sv_status_cb != NULL) {
-            locEng->sv_status_cb((GpsSvStatus*)&(mSvStatus),
+            locEng->sv_status_cb((GpsSvStatus*)&(gnssSvStatus),
                                  (void*)mSvExt);
         }
 
         if (locEng->generateNmea)
         {
-            loc_eng_nmea_generate_sv(locEng, mSvStatus, mLocationExtended);
+            loc_eng_nmea_generate_sv(locEng, gnssSvStatus, mLocationExtended);
         }
     }
 }
@@ -1761,7 +1806,7 @@ int loc_eng_init(loc_eng_data_s_type &loc_eng_data, LocCallbacks* callbacks,
         event = event ^ LOC_API_ADAPTER_BIT_NMEA_1HZ_REPORT; // unregister for modem NMEA report
         loc_eng_data.generateNmea = true;
     }
-    else
+    else if (gps_conf.NMEA_PROVIDER == NMEA_PROVIDER_MP)
     {
         loc_eng_data.generateNmea = false;
     }
@@ -1790,6 +1835,13 @@ static int loc_eng_reinit(loc_eng_data_s_type &loc_eng_data)
     adapter->sendMsg(new LocEngSensorControlConfig(adapter, sap_conf.SENSOR_USAGE,
                                                    sap_conf.SENSOR_PROVIDER));
     adapter->sendMsg(new LocEngAGlonassProtocol(adapter, gps_conf.A_GLONASS_POS_PROTOCOL_SELECT));
+
+    if (!loc_eng_data.generateNmea)
+    {
+        NmeaSentenceTypesMask typesMask = LOC_NMEA_ALL_SUPPORTED_MASK;
+        LOC_LOGD("loc_eng_init setting nmea types, mask = %u\n",typesMask);
+        adapter->sendMsg(new LocEngSetNmeaTypes(adapter,typesMask));
+    }
 
     /* Make sure at least one of the sensor property is specified by the user in the gps.conf file. */
     if( sap_conf.GYRO_BIAS_RANDOM_WALK_VALID ||
@@ -1974,7 +2026,6 @@ static int loc_eng_stop_handler(loc_eng_data_s_type &loc_eng_data)
    int ret_val = LOC_API_ADAPTER_ERR_SUCCESS;
 
    if (loc_eng_data.adapter->isInSession()) {
-
        ret_val = loc_eng_data.adapter->stopFix();
        loc_eng_data.adapter->setInSession(FALSE);
    }
@@ -2856,8 +2907,9 @@ void loc_eng_handle_engine_up(loc_eng_data_s_type &loc_eng_data)
     if (loc_eng_data.adapter->isInSession()) {
         // This sets the copy in adapter to modem
         loc_eng_data.adapter->setInSession(false);
-        loc_eng_data.adapter->sendMsg(new LocEngStartFix(loc_eng_data.adapter));
+        loc_eng_start_handler(loc_eng_data);
     }
+
     EXIT_LOG(%s, VOID_RET);
 }
 

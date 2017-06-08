@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2016, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -80,7 +80,9 @@ class LocEngAdapter : public LocAdapterBase {
     unsigned int mPowerVote;
     static const unsigned int POWER_VOTE_RIGHT = 0x20;
     static const unsigned int POWER_VOTE_VALUE = 0x10;
-
+    /** Gnss sv used in position data */
+    GnssSvUsedInPosition mGnssSvIdUsedInPosition;
+    bool mGnssSvIdUsedInPosAvail;
 public:
     bool mSupportsAgpsRequests;
     bool mSupportsPositionInjection;
@@ -106,6 +108,25 @@ public:
         return mContext->hasCPIExtendedCapabilities();
     }
     inline const MsgTask* getMsgTask() { return mMsgTask; }
+
+    inline void clearGnssSvUsedListData() {
+        mGnssSvIdUsedInPosAvail = false;
+        memset(&mGnssSvIdUsedInPosition, 0, sizeof (GnssSvUsedInPosition));
+    }
+
+    inline void setGnssSvUsedListData(GnssSvUsedInPosition gnssSvUsedIds) {
+        mGnssSvIdUsedInPosAvail = true;
+        memcpy(&mGnssSvIdUsedInPosition, &gnssSvUsedIds,
+                                    sizeof(GnssSvUsedInPosition));
+    }
+
+    inline GnssSvUsedInPosition getGnssSvUsedListData() {
+        return mGnssSvIdUsedInPosition;
+    }
+
+    inline bool isGnssSvIdUsedInPosAvail() {
+        return mGnssSvIdUsedInPosAvail;
+    }
 
     inline enum loc_api_adapter_err
         startFix()
@@ -185,6 +206,11 @@ public:
         setSUPLVersion(uint32_t version)
     {
         return mLocApi->setSUPLVersion(version);
+    }
+    inline enum loc_api_adapter_err
+        setNMEATypes (uint32_t typesMask)
+    {
+        return mLocApi->setNMEATypes(typesMask);
     }
     inline enum loc_api_adapter_err
         setLPPConfig(uint32_t profile)
