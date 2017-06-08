@@ -278,6 +278,10 @@ vendor/lib/libIQ_Match_Lib.so
 vendor/lib/libalCMotion.so
 vendor/lib/libAltek_AF.so
 vendor/lib/libIAFalSDE1.so
+lib/libalColorMono.so
+lib/libalDU_Utility.so
+lib/libalRnBLV.so
+lib/libalSDK.so
 
 # Camera actuators
 vendor/lib/libactuator_ad5816g.so
