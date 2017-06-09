@@ -1359,9 +1359,13 @@ vendor/lib/libqmiservices.so
 vendor/lib/libsmemlog.so
 
 # Radio
+-app/QtiTelephonyService/QtiTelephonyService.apk
 -app/shutdownlistener/shutdownlistener.apk
 -framework/qcnvitems.jar
 -framework/qcrilhook.jar
+framework/qti-telephony-common.jar
+framework/QtiTelephonyServicelibrary.jar
+etc/permissions/telephonyservice.xml
 bin/netmgrd
 bin/qmuxd
 bin/radish
