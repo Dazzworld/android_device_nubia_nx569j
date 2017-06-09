@@ -241,10 +241,11 @@ $(WV_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 
 ALL_DEFAULT_INSTALLED_MODULES += $(WV_SYMLINKS)
 
-# Create a link for the WCNSS config file, which ends up as a writable
-# version in /data/misc/wifi
-$(shell mkdir -p $(TARGET_OUT)/etc/firmware/wlan/prima; \
-    ln -sf /data/misc/wifi/WCNSS_qcom_cfg.ini \
-	    $(TARGET_OUT)/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini)
+include device/nubia/nx569j/tftp.mk
+
+
+$(shell mkdir -p $(TARGET_OUT)/lib/modules; \
+    ln -sf /system/lib/modules/pronto/pronto_wlan.ko \
+        $(TARGET_OUT)/lib/modules/wlan.ko)
 
 endif
