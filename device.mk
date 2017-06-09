@@ -214,6 +214,21 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     sensors.msm8952
 
+# NFC
+PRODUCT_PACKAGES += \
+    com.android.nfc_extras \
+    NfcNci \
+    Tag
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/nfc/libnfc-brcm-20797b00.conf:system/etc/nfc/libnfc-brcm-20797b00.conf \
+    $(LOCAL_PATH)/nfc/hal/nfc_nci.bcm2079x.default.so:system/lib64/hw/nfc_nci.bcm2079x.default.so \
+    $(LOCAL_PATH)/nfc/firmware/Generic_unsigned_70ms.ncd:system/vendor/firmware/Generic_unsigned_70ms.ncd \
+    $(LOCAL_PATH)/nfc/firmware/Generic_unsigned_119_1.ncd:system/vendor/firmware/Generic_unsigned_119_1.ncd \
+    $(LOCAL_PATH)/nfc/firmware/Generic_unsigned_NVM.ncd:system/vendor/firmware/Generic_unsigned_NVM.ncd \
+    $(LOCAL_PATH)/nfc/firmware/Generic_unsigned_OK.ncd:system/vendor/firmware/Generic_unsigned_OK.ncd
+
 # Snapdragon Camera
 PRODUCT_PACKAGES += \
     Snap
