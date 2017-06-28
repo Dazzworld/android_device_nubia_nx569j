@@ -289,11 +289,13 @@ lib/libalSPE.so
 lib/libArcsoftAlgorithm.so
 lib/libarcsoft_dualcam_refocus.so
 lib/libPrettyWaterMark.so
+lib/libBigAperture.so
 lib64/libalParseOTP.so
 lib64/libalSPE.so
 lib64/libArcsoftAlgorithm.so
 lib64/libarcsoft_dualcam_refocus.so
 lib64/libPrettyWaterMark.so
+lib64/libBigAperture.so
 
 # Camera actuators
 vendor/lib/libactuator_ad5816g.so
@@ -1447,6 +1449,12 @@ vendor/lib/sensors.ssc.so
 # Sound trigger
 vendor/lib/hw/sound_trigger.primary.msm8952.so
 vendor/lib/libsmwrapper.so
+# NFC
+lib64/hw/nfc_nci.bcm2079x.default.so
+vendor/firmware/Generic_unsigned_70ms.ncd
+vendor/firmware/Generic_unsigned_119_1.ncd
+vendor/firmware/Generic_unsigned_NVM.ncd
+vendor/firmware/Generic_unsigned_OK.ncd
 
 # Thermal
 vendor/bin/thermal-engine
