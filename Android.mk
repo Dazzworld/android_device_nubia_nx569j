@@ -66,6 +66,17 @@ $(LOCAL_BUILT_MODULE):
 	$(hide) ln -sf $(ACTUAL_MODULE_FILE) $(WCNSS_MODULE_SYMLINK)
 	$(hide) touch $@
 
+IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so
+
+IMS_SYMLINKS := $(addprefix $(TARGET_OUT_APPS_PRIVILEGED)/ims/lib/arm64/,$(notdir $(IMS_LIBS)))
+$(IMS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
+	@echo "IMS lib link: $@"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf /system/lib64/$(notdir $@) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(IMS_SYMLINKS)
+
 ADSP_IMAGES := \
     adsp.b00 adsp.b01 adsp.b02 adsp.b03 adsp.b04 adsp.b05 adsp.b06 adsp.b07 \
     adsp.b08 adsp.b09 adsp.b10 adsp.b11 adsp.mbn adsp.mdt
