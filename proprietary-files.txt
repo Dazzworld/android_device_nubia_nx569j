@@ -119,7 +119,9 @@ lib64/libIndependenceUtil.so
 lib64/libdngcreator.so
 lib64/libmorpho_panorama_gp.so
 lib64/libmulti_exposure.so
+lib64/libmpbase.so
 lib64/libnubia_clone.so
+lib64/libnubia_effect.so
 lib64/libnubia_delay_recorder.so
 lib64/libnubia_gallery_player.so
 lib64/libNubiaImageAlgorithm.so
@@ -282,6 +284,16 @@ lib/libalColorMono.so
 lib/libalDU_Utility.so
 lib/libalRnBLV.so
 lib/libalSDK.so
+lib/libalParseOTP.so
+lib/libalSPE.so
+lib/libArcsoftAlgorithm.so
+lib/libarcsoft_dualcam_refocus.so
+lib/libPrettyWaterMark.so
+lib64/libalParseOTP.so
+lib64/libalSPE.so
+lib64/libArcsoftAlgorithm.so
+lib64/libarcsoft_dualcam_refocus.so
+lib64/libPrettyWaterMark.so
 
 # Camera actuators
 vendor/lib/libactuator_ad5816g.so

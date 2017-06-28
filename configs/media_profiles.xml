@@ -621,6 +621,12 @@
         minFrameHeight="144" maxFrameHeight="1088"
         minFrameRate="15" maxFrameRate="30" />
 
+    <VideoEncoderCap name="h264" enabled="true"
+        minBitRate="64000" maxBitRate="15000000"
+        minFrameWidth="176" maxFrameWidth="1920"
+        minFrameHeight="144" maxFrameHeight="1080"
+        minFrameRate="15" maxFrameRate="60" />
+
     <AudioEncoderCap name="aac" enabled="true"
         minBitRate="8000" maxBitRate="96000"
         minSampleRate="8000" maxSampleRate="48000"

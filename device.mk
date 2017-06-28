@@ -114,7 +114,8 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    fingerprintd
+    fingerprintd \
+    libcamera_parameters_ext
 
 # FM
 PRODUCT_PACKAGES += \
