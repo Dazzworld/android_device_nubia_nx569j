@@ -93,14 +93,20 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 # Once camera module can run in the native mode of the system (either
 # 32-bit or 64-bit), the following line should be deleted
 BOARD_QTI_CAMERA_32BIT_ONLY := true
+TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 TARGET_TS_MAKEUP := true
+
+# Media
+TARGET_USES_MEDIA_EXTENSIONS := true
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
 # CMHW
-BOARD_USES_MOKEE_HARDWARE := true
-BOARD_HARDWARE_CLASS += hardware/mokee/mkhw
+BOARD_USES_CYANOGEN_HARDWARE := true
+BOARD_HARDWARE_CLASS += \
+    hardware/cyanogen/cmhw
+
 
 # CNE
 BOARD_USES_QCNE := true
@@ -146,7 +152,6 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 
 # GPS
 USE_DEVICE_SPECIFIC_GPS := true
-USE_DEVICE_SPECIFIC_LOC_API := true
 TARGET_NO_RPC := true
 
 # Init
@@ -159,9 +164,6 @@ TARGET_PROVIDES_KEYMASTER := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
-
-# Malloc
-MALLOC_IMPL := dlmalloc
 
 # Peripheral manager
 TARGET_PER_MGR_ENABLED := true

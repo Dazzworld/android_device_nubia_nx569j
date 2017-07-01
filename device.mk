@@ -65,6 +65,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
+# Device was launched with M
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.product.first_api_level=23
+
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
@@ -78,9 +82,13 @@ PRODUCT_PACKAGES += \
     audio.primary.msm8952 \
     audio.r_submix.default \
     audio.usb.default \
+    libaudio-resampler \
+    libaudioroute \
+    libbthost_if \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libvolumelistener \
     tinymix
 
 PRODUCT_COPY_FILES += \
@@ -114,8 +122,11 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    fingerprintd \
-    libcamera_parameters_ext
+    fingerprintd
+
+# For android_filesystem_config.h
+PRODUCT_PACKAGES += \
+    fs_config_files
 
 # FM
 PRODUCT_PACKAGES += \
@@ -278,4 +289,4 @@ PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
     wpa_supplicant_overlay.conf
 
-$(call inherit-product, device/nubia/nx569j/tapp/copyfiles.mk)
+#$(call inherit-product, device/nubia/nx569j/tapp/copyfiles.mk)
