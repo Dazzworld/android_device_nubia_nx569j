@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+TARGET_OTA_ASSERT_DEVICE := NX569J
+
 DEVICE_PATH := device/nubia/nx569j
 
 TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include

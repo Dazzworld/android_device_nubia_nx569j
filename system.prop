@@ -82,7 +82,9 @@ persist.loc.nlp_name=com.qualcomm.location
 ro.gps.agps_provider=1
 
 # Media
-media.msm8956hw=0
+media.msm8956hw=1
+media.settings.xml=/etc/media_profiles_8956.xml
+media.msm8956.versiono=1
 mm.enable.smoothstreaming=true
 av.debug.disable.pers.cache=true
 mmp.enable.3g2=true

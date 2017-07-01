@@ -14,9 +14,7 @@
 # limitations under the License.
 #
 
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, device/nubia/nx569j/full_nx569j.mk)
 
 # Inherit some common Mk stuff.
 $(call inherit-product, vendor/mk/config/common_full_phone.mk)
@@ -24,23 +22,9 @@ $(call inherit-product, vendor/mk/config/common_full_phone.mk)
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.mk.maintainer=chenzc
 
-# Inherit from nx569j device
-$(call inherit-product, device/nubia/nx569j/device.mk)
-
-# Set those variables here to overwrite the inherited values.
 BOARD_VENDOR := nubia
-PRODUCT_BRAND := nubia
-PRODUCT_DEVICE := nx569j
-PRODUCT_NAME := mk_nx569j
-PRODUCT_MANUFACTURER := nubia
-PRODUCT_MODEL := nx569j
-TARGET_VENDOR := nubia
 
 PRODUCT_GMS_CLIENTID_BASE := android-nubia
-
-TARGET_VENDOR_PRODUCT_NAME := NX569J
-TARGET_VENDOR_DEVICE_NAME := NX569J
-PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=NX569J PRODUCT_NAME=NX569J PRODUCT_MODEL=NX569J
 
 # Use the latest approved GMS identifiers unless running a signed build
 ifneq ($(SIGN_BUILD),true)

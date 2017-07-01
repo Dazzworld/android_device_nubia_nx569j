@@ -277,3 +277,5 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
     wpa_supplicant_overlay.conf
+
+$(call inherit-product, device/nubia/nx569j/tapp/copyfiles.mk)

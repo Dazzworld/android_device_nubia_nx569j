@@ -348,6 +348,3 @@ on property:persist.sys.image.cabc=m
 on property:persist.sys.image.cabc=h
     write /sys/kernel/lcd_enhance/cabc 26
 #LCD display preference end
-
-#cmx added
-import init.cmx.rc

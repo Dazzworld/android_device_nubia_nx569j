@@ -217,18 +217,6 @@ typedef uint16_t GpsLocationExtendedFlags;
 #define GPS_LOCATION_EXTENDED_HAS_HOR_RELIABILITY 0x0080
 /** GpsLocationExtended has valid vertical reliability */
 #define GPS_LOCATION_EXTENDED_HAS_VERT_RELIABILITY 0x0100
-/** GpsLocationExtended has valid gnss sv used in position data */
-#define GPS_LOCATION_EXTENDED_HAS_GNSS_SV_USED_DATA 0x0200
-
-/** GPS PRN Range */
-#define GPS_SV_PRN_MIN      1
-#define GPS_SV_PRN_MAX      32
-#define GLO_SV_PRN_MIN      65
-#define GLO_SV_PRN_MAX      96
-#define BDS_SV_PRN_MIN      201
-#define BDS_SV_PRN_MAX      235
-#define GAL_SV_PRN_MIN      301
-#define GAL_SV_PRN_MAX      336
 
 typedef enum {
     LOC_RELIABILITY_NOT_SET = 0,
@@ -237,13 +225,6 @@ typedef enum {
     LOC_RELIABILITY_MEDIUM = 3,
     LOC_RELIABILITY_HIGH = 4
 }LocReliability;
-
-typedef struct {
-    uint64_t gps_sv_used_ids_mask;
-    uint64_t glo_sv_used_ids_mask;
-    uint64_t gal_sv_used_ids_mask;
-    uint64_t bds_sv_used_ids_mask;
-} GnssSvUsedInPosition;
 
 /** Represents gps location extended. */
 typedef struct {
@@ -271,8 +252,6 @@ typedef struct {
     LocReliability  horizontal_reliability;
     /** vertical reliability. */
     LocReliability  vertical_reliability;
-    /** Gnss sv used in position data */
-    GnssSvUsedInPosition gnss_sv_used_ids;
 } GpsLocationExtended;
 
 /** Represents SV status. */
@@ -308,47 +287,17 @@ typedef struct {
      */
     uint32_t    glo_used_in_fix_mask;
 
-    /** Represents a bit mask indicating which GLONASS SVs
-     * have ephemeris data.
-     */
-    uint64_t    glo_ephemeris_mask;
-
-    /** Represents a bit mask indicating which GLONASS SVs
-     * have almanac data.
-     */
-    uint64_t    glo_almanac_mask;
-
     /**
      * Represents a bit mask indicating which BDS SVs
      * were used for computing the most recent position fix.
      */
     uint64_t    bds_used_in_fix_mask;
 
-    /** Represents a bit mask indicating which BDS SVs
-     * have ephemeris data.
-     */
-    uint64_t    bds_ephemeris_mask;
-
-    /** Represents a bit mask indicating which BDS SVs
-     * have almanac data.
-     */
-    uint64_t    bds_almanac_mask;
-
     /**
      * Represents a bit mask indicating which GALILEO SVs
      * were used for computing the most recent position fix.
      */
     uint64_t    gal_used_in_fix_mask;
-
-    /** Represents a bit mask indicating which GALILEO SVs
-     * have ephemeris data.
-     */
-    uint64_t    gal_ephemeris_mask;
-
-    /** Represents a bit mask indicating which GALILEO SVs
-     * have almanac data.
-     */
-    uint64_t    gal_almanac_mask;
 
 } GnssSvStatus;
 
