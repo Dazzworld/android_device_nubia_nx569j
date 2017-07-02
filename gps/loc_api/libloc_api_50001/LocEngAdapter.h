@@ -85,6 +85,7 @@ public:
     bool mSupportsAgpsRequests;
     bool mSupportsPositionInjection;
     bool mSupportsTimeInjection;
+    GnssSystemInfo mGnssInfo;
 
     LocEngAdapter(LOC_API_ADAPTER_EVENT_MASK_T mask,
                   void* owner, ContextBase* context,
@@ -104,6 +105,9 @@ public:
     }
     inline bool hasCPIExtendedCapabilities() {
         return mContext->hasCPIExtendedCapabilities();
+    }
+    inline bool hasNativeXtraClient() {
+        return mContext->hasNativeXtraClient();
     }
     inline const MsgTask* getMsgTask() { return mMsgTask; }
 
@@ -227,14 +231,14 @@ public:
                                                   algorithmConfig);
     }
     inline virtual enum loc_api_adapter_err
-        setExtPowerConfig(int isBatteryCharging)
-    {
-        return mLocApi->setExtPowerConfig(isBatteryCharging);
-    }
-    inline virtual enum loc_api_adapter_err
         setAGLONASSProtocol(unsigned long aGlonassProtocol)
     {
         return mLocApi->setAGLONASSProtocol(aGlonassProtocol);
+    }
+    inline virtual enum loc_api_adapter_err
+        setLPPeProtocol(unsigned long lppeCP, unsigned long lppeUP)
+    {
+        return mLocApi->setLPPeProtocol(lppeCP, lppeUP);
     }
     inline virtual int initDataServiceClient()
     {
@@ -289,7 +293,7 @@ public:
     virtual bool requestSuplES(int connHandle);
     virtual bool reportDataCallOpened();
     virtual bool reportDataCallClosed();
-    virtual void reportGpsMeasurementData(GpsData &gpsMeasurementData);
+    virtual void reportGnssMeasurementData(GnssData &gnssMeasurementData);
 
     inline const LocPosMode& getPositionMode() const
     {return mFixCriteria;}

@@ -1,4 +1,4 @@
-/* Copyright (c) 2013-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2013-2015, 2016 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -81,6 +81,11 @@ enum loc_registration_mask_status {
     LOC_REGISTRATION_MASK_ENABLED,
     LOC_REGISTRATION_MASK_DISABLED
 };
+
+typedef enum {
+    LOC_SUPPORTED_FEATURE_ODCPI_2_V02 = 0, /**<  Support ODCPI version 2 feature  */
+    LOC_SUPPORTED_FEATURE_WIFI_AP_DATA_INJECT_2_V02 /**<  Support Wifi AP data inject version 2 feature  */
+} loc_supported_feature_enum;
 
 typedef struct {
     /** set to sizeof(UlpLocation) */
@@ -165,14 +170,14 @@ typedef struct {
 } AGpsExtCallbacks;
 
 
+typedef void (*loc_ni_notify_callback)(GpsNiNotification *notification, bool esEnalbed);
 /** GPS NI callback structure. */
 typedef struct
 {
     /**
      * Sends the notification request from HAL to GPSLocationProvider.
      */
-    gps_ni_notify_callback notify_cb;
-    gps_create_thread create_thread_cb;
+    loc_ni_notify_callback notify_cb;
 } GpsNiExtCallbacks;
 
 typedef enum loc_server_type {
@@ -217,6 +222,12 @@ typedef uint16_t GpsLocationExtendedFlags;
 #define GPS_LOCATION_EXTENDED_HAS_HOR_RELIABILITY 0x0080
 /** GpsLocationExtended has valid vertical reliability */
 #define GPS_LOCATION_EXTENDED_HAS_VERT_RELIABILITY 0x0100
+/** GpsLocationExtended has valid Horizontal Elliptical Uncertainty (Semi-Major Axis) */
+#define GPS_LOCATION_EXTENDED_HAS_HOR_ELIP_UNC_MAJOR 0x0200
+/** GpsLocationExtended has valid Horizontal Elliptical Uncertainty (Semi-Minor Axis) */
+#define GPS_LOCATION_EXTENDED_HAS_HOR_ELIP_UNC_MINOR 0x0400
+/** GpsLocationExtended has valid Elliptical Horizontal Uncertainty Azimuth */
+#define GPS_LOCATION_EXTENDED_HAS_HOR_ELIP_UNC_AZIMUTH 0x0800
 
 typedef enum {
     LOC_RELIABILITY_NOT_SET = 0,
@@ -252,54 +263,13 @@ typedef struct {
     LocReliability  horizontal_reliability;
     /** vertical reliability. */
     LocReliability  vertical_reliability;
+    /*  Horizontal Elliptical Uncertainty (Semi-Major Axis) */
+    float           horUncEllipseSemiMajor;
+    /*  Horizontal Elliptical Uncertainty (Semi-Minor Axis) */
+    float           horUncEllipseSemiMinor;
+    /*    Elliptical Horizontal Uncertainty Azimuth */
+    float           horUncEllipseOrientAzimuth;
 } GpsLocationExtended;
-
-/** Represents SV status. */
-typedef struct {
-    /** set to sizeof(GnssSvStatus) */
-    size_t          size;
-
-    /** Number of SVs currently visible. */
-    int         num_svs;
-
-    /** Contains an array of SV information. */
-    GpsSvInfo   sv_list[GPS_MAX_SVS];
-
-    /** Represents a bit mask indicating which SVs
-     * have ephemeris data.
-     */
-    uint32_t    ephemeris_mask;
-
-    /** Represents a bit mask indicating which SVs
-     * have almanac data.
-     */
-    uint32_t    almanac_mask;
-
-    /**
-     * Represents a bit mask indicating which GPS SVs
-     * were used for computing the most recent position fix.
-     */
-    uint32_t    gps_used_in_fix_mask;
-
-    /**
-     * Represents a bit mask indicating which GLONASS SVs
-     * were used for computing the most recent position fix.
-     */
-    uint32_t    glo_used_in_fix_mask;
-
-    /**
-     * Represents a bit mask indicating which BDS SVs
-     * were used for computing the most recent position fix.
-     */
-    uint64_t    bds_used_in_fix_mask;
-
-    /**
-     * Represents a bit mask indicating which GALILEO SVs
-     * were used for computing the most recent position fix.
-     */
-    uint64_t    gal_used_in_fix_mask;
-
-} GnssSvStatus;
 
 enum loc_sess_status {
     LOC_SESS_SUCCESS,
