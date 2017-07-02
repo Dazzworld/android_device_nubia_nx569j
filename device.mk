@@ -100,6 +100,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
     $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml
 
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.adb.secure=0
+
 # Doze mode
 PRODUCT_PACKAGES += \
     NubiaDoze
@@ -128,10 +132,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fs_config_files
 
-# FM
-PRODUCT_PACKAGES += \
-    FMRadio \
-    libfmjni
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -186,13 +186,12 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 # ConfigPanel
-PRODUCT_PACKAGES += \
-    ConfigPanel \
-    wx_soter
+#PRODUCT_PACKAGES += \
+#    ConfigPanel \
+#    wx_soter
 
 # fingerprint pay
 PRODUCT_BOOT_JARS += \
-    wx_soter \
     ifaa_fingerprint
 
 $(call add-product-dex-preopt-module-config,wx_soter,disable)
