@@ -24,7 +24,7 @@ $(call inherit-product, device/nubia/nx569j/device.mk)
 # Device identifier. This must come after all inclusions
 TARGET_VENDOR := nubia
 PRODUCT_DEVICE := nx569j
-PRODUCT_NAME  := lineage_nx569j
+PRODUCT_NAME  := mk_nx569j
 PRODUCT_BRAND := nubia
 PRODUCT_MODEL := nx569j
 PRODUCT_MANUFACTURER := nubia

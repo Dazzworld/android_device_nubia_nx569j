@@ -1,0 +1,18 @@
+[
+ {
+   "repository": "android_device_qcom_common",
+   "target_path": "device/qcom/common"
+ },
+ {
+   "repository": "android_vendor_nubia_nx569j",
+   "target_path": "vendor/nubia/nx569j"
+ },
+ {
+   "repository": "android_kernel_nubia_nx569j",
+   "target_path": "kernel/nubia/nx569j"
+ },
+ {
+   "repository": "android_packages_resources_devicesettings",
+   "target_path": "packages/resources/devicesettings"
+ }
+]
