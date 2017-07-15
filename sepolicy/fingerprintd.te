@@ -1,6 +1,15 @@
-allow fingerprintd tee_device:chr_file { read write ioctl open };
+binder_call(fingerprintd, gx_fpd);
+allow fingerprintd gx_fpd_service:service_manager find;
 
-allow fingerprintd fpc_data_file:dir create_dir_perms;
-allow fingerprintd fpc_data_file:sock_file { create unlink };
+# allow TEE
+allow fingerprintd tee_device:chr_file rw_file_perms;
 
-allow fingerprintd fpc_sysfs:file rw_file_perms;
+# allow log
+allow fingerprintd log_device:dir search;
+allow fingerprintd log_device:chr_file rw_file_perms;
+
+# allow writing fp_msg_type
+allow fingerprintd sysfs:file write;
+
+# R dir perms for firmware dir
+r_dir_file(fingerprintd, firmware_file)

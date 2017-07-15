@@ -12,34 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
 # Inherit from z2pro device
 $(call inherit-product, device/nubia/nx569j/full_nx569j.mk)
 
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
+BOARD_VENDOR := nubia
 
-TARGET_VENDOR := ZUK
-PRODUCT_NAME := lineage_z2pro
-PRODUCT_DEVICE := z2pro
-PRODUCT_MANUFACTURER := ZUK
-PRODUCT_BRAND := ZUK
-PRODUCT_MODEL := ZUK Z2121
+PRODUCT_GMS_CLIENTID_BASE := android-nubia
 
-PRODUCT_GMS_CLIENTID_BASE := android-zuk
-
-TARGET_VENDOR_PRODUCT_NAME := z2_row
-TARGET_VENDOR_DEVICE_NAME := z2_row
-PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=z2_row PRODUCT_NAME=z2_row
-
+# Use the latest approved GMS identifiers unless running a signed build
+ifneq ($(SIGN_BUILD),true)
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BUILD_FINGERPRINT=ZUK/z2_row/z2_row:7.0/NRD90M/2.5.335_170116:user/release-keys \
-    PRIVATE_BUILD_DESC="z2_row-user 7.0 NRD90M 2.5.335_170116 release-keys"
+    BUILD_FINGERPRINT=nubia/NX569J/NX569J:6.0.1/MMB29M/nubia04232153:user/release-keys \
+    PRIVATE_BUILD_DESC="NX569J-user 6.0.1 MMB29M eng.nubia.20170423.215159 release-keys"
+endif
 
-TARGET_VENDOR := ZUK
-
--include vendor/aicp/configs/bootanimation.mk

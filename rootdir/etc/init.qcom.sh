@@ -79,8 +79,8 @@ baseband=`getprop ro.baseband`
 echo 1 > /proc/sys/net/ipv6/conf/default/accept_ra_defrtr
 
 start_sensors
-start_copying_prebuilt_qcril_db
 start_msm_irqbalance_8952
+start_copying_prebuilt_qcril_db
 
 if [ -f /sys/class/graphics/fb0/modes ]; then
 	panel_res=`cat /sys/class/graphics/fb0/modes`

@@ -22,16 +22,13 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, device/nubia/nx569j/device.mk)
 
 # Device identifier. This must come after all inclusions
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.mk.maintainer=chenzc
+TARGET_VENDOR := nubia
+PRODUCT_DEVICE := nx569j
+PRODUCT_NAME  := lineage_nx569j
+PRODUCT_BRAND := nubia
+PRODUCT_MODEL := nx569j
+PRODUCT_MANUFACTURER := nubia
 
-BOARD_VENDOR := nubia
-
-PRODUCT_GMS_CLIENTID_BASE := android-nubia
-
-# Use the latest approved GMS identifiers unless running a signed build
-ifneq ($(SIGN_BUILD),true)
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    BUILD_FINGERPRINT=nubia/NX569J/NX569J:6.0.1/MMB29M/nubia04232153:user/release-keys \
-    PRIVATE_BUILD_DESC="NX569J-user 6.0.1 MMB29M eng.nubia.20170423.215159 release-keys"
-endif
+TARGET_VENDOR_PRODUCT_NAME := NX569J
+TARGET_VENDOR_DEVICE_NAME := NX569J
+PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=NX569J PRODUCT_NAME=NX569J PRODUCT_MODEL=NX569J

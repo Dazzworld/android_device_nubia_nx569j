@@ -92,11 +92,12 @@ PRODUCT_PACKAGES += \
     tinymix
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/aanc_tuning_mixer.txt:system/etc/aanc_tuning_mixer.txt \
     $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf \
     $(LOCAL_PATH)/audio/audio_platform_info.xml:system/etc/audio_platform_info.xml \
     $(LOCAL_PATH)/audio/audio_platform_info_extcodec.xml:system/etc/audio_platform_info_extcodec.xml \
-    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/audio/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
     $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml
 
@@ -106,7 +107,8 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 
 # Doze mode
 PRODUCT_PACKAGES += \
-    NubiaDoze
+    NubiaDoze \
+    NubiaCamera
 
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
@@ -124,14 +126,9 @@ PRODUCT_PACKAGES += \
     memtrack.msm8952 \
     liboverlay
 
-# Fingerprint
-PRODUCT_PACKAGES += \
-    fingerprintd
-
 # For android_filesystem_config.h
 PRODUCT_PACKAGES += \
     fs_config_files
-
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -143,15 +140,23 @@ PRODUCT_PACKAGES += \
     xtwifi.conf
 
 PRODUCT_PACKAGES += \
-    gps.msm8952
+    gps.msm8952 \
+    libcurl \
+    libgnsspps
 
 # IPACM
 PRODUCT_PACKAGES += \
     IPACM_cfg.xml \
     ipacm
 
+# FM
+PRODUCT_PACKAGES += \
+    FMRadio \
+    libfmjni
+
 # IRQ
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/msm_irqbalance.conf:system/vendor/etc/msm_irqbalance.conf \
     $(LOCAL_PATH)/configs/msm_irqbalance_little_big.conf:system/vendor/etc/msm_irqbalance_little_big.conf
 
 # IRSC
@@ -193,8 +198,6 @@ PRODUCT_COPY_FILES += \
 # fingerprint pay
 PRODUCT_BOOT_JARS += \
     ifaa_fingerprint
-
-$(call add-product-dex-preopt-module-config,wx_soter,disable)
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -271,6 +274,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     wcnss_service
 
+# libshims
+PRODUCT_PACKAGES += \
+    libshim_camera
+
+PRODUCT_PACKAGES+=\
+    libshims_ims
+
 # Wifi
 PRODUCT_PACKAGES += \
     libqsap_sdk \
@@ -287,5 +297,3 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
     wpa_supplicant_overlay.conf
-
-#$(call inherit-product, device/nubia/nx569j/tapp/copyfiles.mk)
