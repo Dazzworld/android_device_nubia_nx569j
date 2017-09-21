@@ -107,8 +107,7 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 
 # Doze mode
 PRODUCT_PACKAGES += \
-    NubiaDoze \
-    NubiaCamera
+    NubiaDoze
 
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
