@@ -165,8 +165,7 @@ static int set_light_backlight(struct light_device_t* dev,
 static int set_breath_light_locked(int event,
         struct light_state_t const* state)
 {
-
-    unsigned int colorRGB;
+    int onMS, offMS;
     char buffer[25];
     int brightness;
 
@@ -181,7 +180,6 @@ static int set_breath_light_locked(int event,
     ALOGD("set_speaker_light_locked mode=%d brightnsS=%d\n", state->flashMode, brightness);
 
     if(state->flashMode != LIGHT_FLASH_TIMED) {
-
             if(event == BREATH_SOURCE_BATTERY && brightness != 0){  //battery charging
                 char charging_status[15];
                 FILE* fp = fopen(BATTERY_CHARGING_STATUS, "rb");
@@ -195,12 +193,58 @@ static int set_breath_light_locked(int event,
             } else {
                 if(brightness == 28 || brightness == 0)    // battery charged or disconnected
                     is_charging = 0;
-	    return 0;
-	}
-    }
+		}
+		return 0;
+    }else {
+    	onMS = state->flashOnMS;
+        offMS = state->flashOffMS;
+	    switch(onMS){
+		case 5000:
+		    onMS = 5;
+		    break;
+		case 2000:
+		    onMS = 4;
+		    break;
+		case 1000:
+		    onMS = 3;
+		    break;
+		case 500:
+		    onMS = 2;
+		    break;
+		case 250:
+		    onMS = 1;
+		    break;
+		default:
+		    onMS = 1;
+	    }
 
+	    switch(offMS){
+		case 5000:
+		    offMS = 5;
+		    break;
+		case 2000:
+		    offMS = 4;
+		    break;
+		case 1000:
+		    offMS = 3;
+		    break;
+		case 500:
+		    offMS = 2;
+		    break;
+		case 250:
+		    offMS = 1;
+		    break;
+		case 1:
+		    offMS = 0;
+		    break;
+		default:
+		    offMS = 0;
+	    }
+	}
+    snprintf(buffer, sizeof(buffer), "%d %d %d\n", offMS, onMS, onMS);
+    ALOGD("offMS=%d onMS=%d onMS=%d\n", offMS, onMS, onMS);
     write_int(BREATH_RED_OUTN, HOME_MASK);
-    write_str(BREATH_RED_FADE, "3 0 4");
+    write_str(BREATH_RED_FADE, buffer);
     write_str(BREATH_RED_GRADE, "0 255");
     write_int(BREATH_RED_LED, AW_FADE_AUTO);
 
@@ -218,42 +262,41 @@ static int set_light_buttons(struct light_device_t* dev,
     if(brightness > 200)
 	brightness = 200;
 
-   pthread_mutex_lock(&g_lock);
+    pthread_mutex_lock(&g_lock);
 
     if(brightness == 0 && is_charging == 1){    // buttons on & charging
-	write_int(BREATH_RED_OUTN, AW_POWER_OFF);
+	    write_int(BREATH_RED_OUTN, AW_POWER_OFF);
     	write_int(BREATH_RED_LED, AW_POWER_OFF);
 
         write_int(BREATH_RED_OUTN, HOME_MASK);
-	write_str(BREATH_RED_FADE, "1 0 0");
-	write_str(BREATH_RED_GRADE, "10 255");
-	write_int(BREATH_RED_LED, AW_CONST_ON);
+	    write_str(BREATH_RED_FADE, "1 0 0");
+	    write_str(BREATH_RED_GRADE, "10 255");
+	    write_int(BREATH_RED_LED, AW_CONST_ON);
         btn_state = 0;
     } else if(brightness != 0 && !btn_state) {                // turn buttons on
         ALOGE(" Button led on");
         write_str(BREATH_RED_FADE, "1 0 0");
         write_str(BREATH_RED_GRADE, "10 255");
-	char prop[PROPERTY_VALUE_MAX];
-	int rc;
-	rc = property_get("perist.sy.disablebtn", prop , "1");
-	
-	
-	//mid
+	    char prop[PROPERTY_VALUE_MAX];
+	    int rc;
+	    rc = property_get("perist.sy.disablebtn", prop , "1");
+
+	    //mid
         write_int(BREATH_RED_OUTN, HOME_MASK);
         write_int(BREATH_RED_LED, AW_CONST_ON);
         
-	if(!rc || (strncmp(prop, "1", PROP_VALUE_MAX) >=0)){
-		//right
-		write_int(BREATH_RED_OUTN, RIGHT_MASK);
-		write_int(BREATH_RED_LED, AW_CONST_ON);
+		if(!rc || (strncmp(prop, "1", PROP_VALUE_MAX) >=0)){
+			//right
+			write_int(BREATH_RED_OUTN, RIGHT_MASK);
+			write_int(BREATH_RED_LED, AW_CONST_ON);
 
-		//left
-		write_int(BREATH_RED_OUTN, LEFT_MASK);
-		write_int(BREATH_RED_LED, AW_CONST_ON);
-	}
+			//left
+			write_int(BREATH_RED_OUTN, LEFT_MASK);
+			write_int(BREATH_RED_LED, AW_CONST_ON);
+		}
         btn_state = 1;
     } else if(brightness == 0 && btn_state){
-	ALOGE(" disable led");
+		ALOGE(" disable led");
         write_int(BREATH_RED_OUTN, 0);
         write_str(BREATH_RED_FADE, "1 0 0");
         write_str(BREATH_RED_GRADE, "10 255");
