@@ -162,6 +162,9 @@ TARGET_PROVIDES_KEYMASTER := true
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
+TARGET_LD_SHIM_LIBS := \
+    /system/vendor/lib/hw/camera.vendor.msm8952.so|libshims_camera_native.so
+
 # Lineage Hardware
 BOARD_HARDWARE_CLASS += \
     $(DEVICE_PATH)/lineagehw
